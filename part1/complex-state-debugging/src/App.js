@@ -7,11 +7,19 @@ const Button = ({name, handler}) => {
 }
 
 const Display = ({good, neutral, bad}) => {
+
+  const all = good + neutral + bad
+  const average = (good - bad) / all
+  const positive = `${(good / all) * 100} %`
+
   return (
     <>
       <div>Good: {good}</div>
       <div>Neutral: {neutral}</div>
       <div>Bad: {bad}</div>
+      <div>All: {all}</div>
+      <div>Average: {average}</div>
+      <div>Positive: {positive}</div>
     </>
   )
 }
