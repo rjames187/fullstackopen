@@ -6,22 +6,32 @@ const Button = ({name, handler}) => {
   )
 }
 
-const Display = ({good, neutral, bad}) => {
+const Statistics = ({good, neutral, bad}) => {
 
   const all = good + neutral + bad
   const average = (good - bad) / all
   const positive = `${(good / all) * 100} %`
 
-  return (
+  if (good === 0 && neutral === 0 && bad === 0){
+    return (
     <>
-      <div>Good: {good}</div>
-      <div>Neutral: {neutral}</div>
-      <div>Bad: {bad}</div>
-      <div>All: {all}</div>
-      <div>Average: {average}</div>
-      <div>Positive: {positive}</div>
+      <h1>Statistics</h1>
+      <div>No Feedback Given</div>
     </>
-  )
+    )
+  } else {
+    return (
+      <>
+        <h1>Statistics</h1>
+        <div>Good: {good}</div>
+        <div>Neutral: {neutral}</div>
+        <div>Bad: {bad}</div>
+        <div>All: {all}</div>
+        <div>Average: {average}</div>
+        <div>Positive: {positive}</div>
+      </>
+    )
+  }
 }
 
 const App = () => {
@@ -53,8 +63,7 @@ const App = () => {
       <Button name={"good"} handler={buttonHandler("good")}></Button>
       <Button name={"neutral"} handler={buttonHandler("neutral")}></Button>
       <Button name={"bad"} handler={buttonHandler("bad")}></Button>
-      <h1>Statistics</h1>
-      <Display good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   )
 }
