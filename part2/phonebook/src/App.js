@@ -12,7 +12,12 @@ const App = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    setPersons([...persons, { name: newName }]);
+    const nameObj = { name: newName };
+    if (persons.map(i => JSON.stringify(i)).includes(JSON.stringify(nameObj))) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      setPersons([...persons, nameObj]);
+    }
   }
 
   return (
