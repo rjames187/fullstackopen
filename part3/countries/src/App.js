@@ -3,14 +3,35 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const FullCountry = ({data}) => {
+  
+  console.log(data);
+
+  return (
+    <>
+      <h1>{data.name.common}</h1>
+      <p>capital {data.capital[0]}</p>
+      <p>area {data.area}</p>
+      <div>
+        languages
+        <ul>
+          {Object.keys(data.languages).map((i) => <li>{data.languages[i]}</li>)}
+        </ul>
+      </div>
+      <img src={data.flags.png} alt={`flag of ${data.name.common}`}/>
+    </>
+  )
+}
+
 const Countries = ({data, searchStr}) => {
-  const results = data.filter((i) => i.toLowerCase().includes(searchStr));
+  const results = data.filter((i) => i.name.common.toLowerCase().includes(searchStr));
 
   return (
     <>
       { 
         results.length > 10 ? <p>Too many matches, specify another filter</p> : 
-        results.map((i, j) => <p key={j}>{i}</p>)
+        results.length !== 1 ? results.map((i, j) => <p key={j}>{i.name.common}</p>) :
+        <FullCountry data={results[0]} />
       }
     </>
   )
@@ -23,9 +44,8 @@ function App() {
 
   useEffect(() => {
     axios.get("https://restcountries.com/v3.1/all").then((res) => {
-      const countries = res.data;
-      const names = countries.map((i) => i.name.common);
-      setData(names);
+      
+      setData(res.data);
     })
   }, [])
 
