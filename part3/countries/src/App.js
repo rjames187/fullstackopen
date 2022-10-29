@@ -26,11 +26,25 @@ const FullCountry = ({data}) => {
 const Countries = ({data, searchStr}) => {
   const results = data.filter((i) => i.name.common.toLowerCase().includes(searchStr));
 
+  const [showingFull, setShowingFull] = useState(false);
+  const [fullCountryData, setFullCountryData] = useState({});
+
+  const handleButtonClick = (j) => {
+    setFullCountryData(results[j]);
+    setShowingFull(true);
+  }
+
+  useEffect(() => {
+    setShowingFull(false);
+  }, [searchStr])
+
   return (
     <>
       { 
+        showingFull ? <FullCountry data={fullCountryData} /> :
         results.length > 10 ? <p>Too many matches, specify another filter</p> : 
-        results.length !== 1 ? results.map((i, j) => <p key={j}>{i.name.common}</p>) :
+        results.length !== 1 ? results.map((i, j) => <><p key={j}>{i.name.common}</p> 
+        <button onClick={() => handleButtonClick(j)} key={j}>Show</button></>) :
         <FullCountry data={results[0]} />
       }
     </>
