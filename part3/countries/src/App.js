@@ -4,8 +4,22 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const FullCountry = ({data}) => {
-  
-  console.log(data);
+
+  const [weather, setWeather] = useState();
+  const API_KEY = process.env.REACT_APP_API_KEY
+
+  useEffect(() => {
+    axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${data.capital[0]}&limit=1&appid=${API_KEY}`).then((res) => {
+      console.log(res.data[0]);
+      const lat = res.data[0].lat;
+      const lon = res.data[0].lon;
+
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=${API_KEY}`).then((res) => {
+        console.log(res.data)
+        setWeather(res.data);
+      })
+    })
+  }, [])
 
   return (
     <>
@@ -19,6 +33,15 @@ const FullCountry = ({data}) => {
         </ul>
       </div>
       <img src={data.flags.png} alt={`flag of ${data.name.common}`}/>
+
+      { weather ? 
+        <>
+          <h2>Weather in {data.capital[0]}</h2>
+          <p>temperature {weather.main.temp} Celsius</p>
+          <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} />
+          <p>wind {weather.wind.speed} m/s</p>
+        </> : <></>
+      }
     </>
   )
 }
