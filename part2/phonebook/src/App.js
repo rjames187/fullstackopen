@@ -66,8 +66,18 @@ const App = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const nameObj = { name: newName, number: newNum };
+    const matchedPersons = persons.filter(i => i.name === newName);
+    console.log(`matched Persons: ${matchedPersons}`)
     if (persons.map(i => JSON.stringify(i)).includes(JSON.stringify(nameObj))) {
       alert(`${newName} is already added to phonebook`)
+    } else if (matchedPersons.length > 0) {
+      if (window.confirm(`${matchedPersons[0].name} is already added to phone number, replace the old number with a new one?`)) {
+        personService.update(matchedPersons[0].id, nameObj)
+          .then(returnedPerson => {
+            console.log(returnedPerson);
+            setTrigger(trigger + 1);
+          })
+      }
     } else {
       personService.create(nameObj)
         .then(returnedPersons => {
