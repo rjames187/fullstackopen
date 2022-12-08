@@ -26,10 +26,12 @@ const PersonForm = ({handleFormSubmit, handleNameChange, handleNumChange}) => {
   )
 }
 
-const Persons = ({persons, searchStr}) => {
+const Persons = ({persons, searchStr, handleDeletion}) => {
   return (
     <>
-      { persons.filter((i) => i.name.includes(searchStr)).map((i, j) => <div key={j}>{i.name + ' ' + i.number}</div>) }
+      { persons.filter((i) => i.name.includes(searchStr)).map((i, j) => 
+        <div key={j}>{i.name + ' ' + i.number}<button onClick={() => handleDeletion(i.id, i.name)}>delete</button></div>
+      )}
     </>
   )
 }
@@ -39,6 +41,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNum, setNewNum] = useState('');
   const [searchStr, setSearchStr] = useState('');
+  const [trigger, setTrigger] = useState(0);
 
   useEffect(() => {
     personService.getAll()
@@ -46,7 +49,7 @@ const App = () => {
         console.log(intialPersons);
         setPersons(intialPersons);
       })
-  }, [])
+  }, [trigger])
 
   const handleNameChange = (e) => {
     setNewName(e.target.value);
@@ -74,6 +77,16 @@ const App = () => {
     }
   }
 
+  const handleDeletion = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)){
+      personService.remove(id)
+        .then(removedPerson => {
+          console.log(removedPerson);
+          setTrigger(trigger + 1);
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -81,7 +94,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm handleFormSubmit={handleFormSubmit} handleNameChange={handleNameChange} handleNumChange={handleNumChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} searchStr={searchStr} />
+      <Persons persons={persons} searchStr={searchStr} handleDeletion={handleDeletion}/>
     </div>
   )
 }
