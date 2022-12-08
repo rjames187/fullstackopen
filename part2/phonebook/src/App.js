@@ -63,6 +63,10 @@ const App = () => {
     if (persons.map(i => JSON.stringify(i)).includes(JSON.stringify(nameObj))) {
       alert(`${newName} is already added to phonebook`)
     } else {
+      axios.post('http://localhost:3001/persons', nameObj)
+        .then(response => {
+          console.log(response.data);
+        })
       setPersons([...persons, nameObj]);
     }
   }
