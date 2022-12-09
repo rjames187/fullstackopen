@@ -36,13 +36,18 @@ const Persons = ({persons, searchStr, handleDeletion}) => {
   )
 }
 
-const Notification = ({ message }) => {
+const Notification = ({ message, type }) => {
   if (message === null) {
     return null
   }
 
-  return (
+  return type === "error" ? (
     <div className='error'>
+      {message}
+    </div>
+  ) :
+  (
+    <div className='success'>
       {message}
     </div>
   )
@@ -55,6 +60,7 @@ const App = () => {
   const [searchStr, setSearchStr] = useState('');
   const [trigger, setTrigger] = useState(0);
   const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personService.getAll()
@@ -93,6 +99,12 @@ const App = () => {
             setTimeout(() => {
               setMessage(null)
             }, 5000)
+          }).catch(err => {
+            console.log(err)
+            setErrorMessage(`Information of ${nameObj.name} has already been removed from the server`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
           })
       }
     } else {
@@ -114,6 +126,12 @@ const App = () => {
         .then(removedPerson => {
           console.log(removedPerson);
           setTrigger(trigger + 1);
+        }).catch(err => {
+          console.log(err)
+          setErrorMessage(`Information of ${name} has already been removed from the server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         })
     }
   }
@@ -121,7 +139,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification type="success" message={message} />
+      <Notification type="error" message={errorMessage} />
       <Filter onChangeHandler={handleSearchChange} />
       <h2>Add a new</h2>
       <PersonForm handleFormSubmit={handleFormSubmit} handleNameChange={handleNameChange} handleNumChange={handleNumChange} />
