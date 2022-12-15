@@ -27,8 +27,11 @@ let persons = [
 ]
 
 app.use(express.json())
+morgan.token('body', (request, response) => {
+  return request.body ? JSON.stringify(request.body) : ""
+})
 
-const logger = morgan('tiny')
+const logger = morgan(':method :url :status :res[content-length] - :response-time ms :body')
 app.use(logger)
 
 app.get('/api/persons', (request, response) => {
