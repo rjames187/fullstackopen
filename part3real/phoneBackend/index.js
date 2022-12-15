@@ -36,6 +36,7 @@ const logger = morgan(':method :url :status :res[content-length] - :response-tim
 app.use(logger)
 
 app.use(cors())
+app.use(express.static('build'))
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
