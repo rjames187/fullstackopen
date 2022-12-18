@@ -8,3 +8,10 @@ content-type: application/json
     "name": "poy",
     "number": "1243214"
 }
+
+###
+GET http://localhost:3001/api/persons
+
+###
+GET http://localhost:3001/api/persons/639e953b3710a711fd937aae
+
