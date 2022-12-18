@@ -61,21 +61,28 @@ app.put('/api/persons/:id', (request, response, next) => {
 })
 
 app.post('/api/persons', (request, response, next) => {
-    const body = request.body
+    Person.find({}).then(persons => {
+      const body = request.body
     
-    if (body.name === undefined || body.number === undefined) {
-      return response.status(400).json({ error: 'name or number missing' })
-    }
+      if (body.name === undefined || body.number === undefined) {
+        return response.status(400).json({ error: 'name or number missing' })
+      }
 
-    const person = new Person({
-      name: body.name,
-      number: body.number
-    })
+      const names = persons.map(person => person.name)
+      if (names.includes(body.name)) {
+        return response.status(400).json({ error: 'name is already in use '})
+      }
 
-    person.save().then(savedPerson => {
-      response.json(savedPerson)
-    }).catch(error => {
-      next(error)
+      const person = new Person({
+        name: body.name,
+        number: body.number
+      })
+
+      person.save().then(savedPerson => {
+        response.json(savedPerson)
+      }).catch(error => {
+        next(error)
+      })
     })
 })
 
