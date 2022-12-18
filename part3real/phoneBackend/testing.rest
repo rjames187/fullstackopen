@@ -17,3 +17,12 @@ GET http://localhost:3001/api/persons/00000
 
 ###
 DELETE http://localhost:3001/api/persons/639e953b3710a711fd937aae
+
+###
+PUT http://localhost:3001/api/persons/639f664c040402aa08c7dc93 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "poy",
+    "number": "1243214"
+}
