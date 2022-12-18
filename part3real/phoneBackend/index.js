@@ -80,9 +80,13 @@ app.post('/api/persons', (request, response, next) => {
 })
 
 app.get('/info', (request, response) => {
-    const numPersons = persons.length
-    const date = String(new Date())
-    response.send(`<p>Phonebook has info for ${numPersons} people</p><p>${date}</p>`)
+    Person.find({}).then(persons => {
+        const numPersons = persons.length
+        const date = String(new Date())
+        response.send(`<p>Phonebook has info for ${numPersons} people</p><p>${date}</p>`)
+    }).catch(error => {
+        next(error)
+    })
 })
 
 const errorHandler = (error, request, response, next) => {
