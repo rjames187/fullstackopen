@@ -8,11 +8,13 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../../part2/phonebook/ && npm run build && cp -r build ../../part3real/phonebackend/",
-    "deploy": "flyctl deploy"
+    "deploy": "flyctl deploy",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^8.30.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
