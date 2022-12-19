@@ -2,10 +2,10 @@ POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
 
 {
-    "title": "Epic Title",
-    "author": "johnny mcEpic",
-    "url": "funny.com",
-    "likes": 52
+    "title": "cool article",
+    "author": "poopy funny face",
+    "url": "cool.com",
+    "likes": 545
 }
 
 ###
