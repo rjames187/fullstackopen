@@ -81,6 +81,16 @@ const blogWithMissingField = [
   }
 ]
 
+const blogWithMissingAuthor = [
+  {
+    _id: '5a422bc61b54a676234d17fc',
+    title: 'Type wars',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    likes: 2,
+    __v: 0
+  }
+]
+
 describe('total likes', () => {
   test('when list has only one blog, equals the likes of that', () => {
     const result = listHelper.totalLikes(listWithOneBlog)
@@ -122,5 +132,27 @@ describe('favorite blog', () => {
   test('when blog in list is missing the likes field, equals the likes of that', () => {
     const result = listHelper.favoriteBlog(blogWithMissingField)
     expect(result).toEqual(blogWithMissingField[0])
+  })
+})
+
+describe('most blogs', () => {
+  test('when list has only one blog, most blogs is', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', blogs: 1 })
+  })
+
+  test('when list has many blogs, most blogs is', () => {
+    const result = listHelper.mostBlogs(listWithManyBlogs)
+    expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 })
+  })
+
+  test('when list has no blogs, most blogs is', () => {
+    const result = listHelper.mostBlogs(listWithNoBlogs)
+    expect(result).toEqual({ author: null, blogs: 0 })
+  })
+
+  test('when blog in list is missing the author field, most blogs is', () => {
+    const result = listHelper.mostBlogs(blogWithMissingAuthor)
+    expect(result).toEqual({ author: null, blogs: 0 })
   })
 })

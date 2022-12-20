@@ -27,6 +27,8 @@
     "testEnvironment": "node"
   },
   "standard": {
-    "env": [ "jest" ]
+    "env": [
+      "jest"
+    ]
   }
 }

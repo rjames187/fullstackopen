@@ -13,8 +13,31 @@ const favoriteBlog = (blogs) => {
   return blogs.reduce(reducer, blogs[0] ? blogs[0] : null)
 }
 
+const mostBlogs = (blogs) => {
+  const map = { }
+  blogs.forEach(blog => {
+    const author = blog.author
+    if (!author) {
+      return
+    }
+    if (!map[author]) {
+      map[author] = 1
+    } else {
+      map[author] += 1
+    }
+  })
+  let max = { author: null, blogs: 0 }
+  for (const authorName in map) {
+    if (map[authorName] > max.blogs) {
+      max = { author: authorName, blogs: map[authorName] }
+    }
+  }
+  return max
+}
+
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }
