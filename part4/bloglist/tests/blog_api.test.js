@@ -48,6 +48,17 @@ test('a blog can be added', async () => {
   expect(titles).toContain('The Center Cannot Hold')
 })
 
+test('missing likes property defaults to zero', async () => {
+  const newBlog = {
+    title: 'The Center Cannot Hold',
+    author: 'Elyn Saks',
+    url: 'law.com'
+  }
+
+  const response = await api.post('/api/blogs').send(newBlog)
+  expect(response.body.likes).toBe(0)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
