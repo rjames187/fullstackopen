@@ -76,6 +76,25 @@ test('missing title or url property results in status code 400', async () => {
   await api.post('/api/blogs').send(urllessBlog).expect(400)
 })
 
+describe('deletion of a note', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+    const titles = blogsAtEnd.map(b => b.title)
+    expect(titles).not.toContain(blogToDelete.title)
+  })
+
+  test('fails with status code 400 if id is invalid', async () => {
+    await api.delete('/api/blogs/12').expect(400)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
