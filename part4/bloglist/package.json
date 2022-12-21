@@ -7,16 +7,19 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "lint": "standard",
-    "test": "jest --verbose"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
     "http": "^0.0.1-security",
-    "mongoose": "^6.8.0"
+    "mongoose": "^6.8.0",
+    "supertest": "^6.3.3"
   },
   "devDependencies": {
     "jest": "^29.3.1",

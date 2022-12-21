@@ -54,7 +54,7 @@ const mostLikes = (blogs) => {
       max = { author: authorName, likes: map[authorName] }
     }
   }
-  return max  
+  return max
 }
 
 module.exports = {
