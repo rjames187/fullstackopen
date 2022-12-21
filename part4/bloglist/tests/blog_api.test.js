@@ -95,6 +95,32 @@ describe('deletion of a note', () => {
   })
 })
 
+describe('update of a blog', () => {
+  const newBlog = {
+    title: 'Industrial Society and its Future',
+    author: 'F.C.',
+    url: 'tjk.com',
+    likes: 3456
+  }
+
+  test('note is successfully updated if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog).expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+    const updatedBlog = blogsAtEnd.filter(b => b.title === newBlog.title)[0]
+    expect(updatedBlog.id).toBe(blogToUpdate.id)
+  })
+
+  test('fails with status code 400 if id is invalid', async () => {
+    await api.put('/api/blogs/356').send(newBlog).expect(400)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

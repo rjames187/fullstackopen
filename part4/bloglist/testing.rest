@@ -10,3 +10,25 @@ content-type: application/json
 
 ###
 GET http://localhost:3003/api/blogs
+
+###
+PUT http://localhost:3003/api/blogs/63a0a1e0fda06bb6c247c5eb HTTP/1.1
+content-type: application/json 
+
+{
+    "title": "cool article",
+    "author": "poopy funny face",
+    "url": "cool.com",
+    "likes": 545
+}
+
+###
+PUT http://localhost:3003/api/blogs/1244 HTTP/1.1
+content-type: application/json 
+
+{
+    "title": "cool article",
+    "author": "poopy funny face",
+    "url": "cool.com",
+    "likes": 545
+}
