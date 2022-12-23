@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
 
 {
-    "title": "another another new blog to test if user binds",
+    "title": "gsd another another new blog to test if user binds",
     "author": "gaba wabadsaf",
     "url": "funnny.com",
     "likes": 54254,
@@ -54,4 +54,16 @@ Content-Type: application/json
 {
     "username": "tjk",
     "password": "funnyepicmoments12!"
+}
+###
+
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRqayIsImlkIjoiNjNhNTFjNWY5NTJjZDc2MGJjNDA1NWY4IiwiaWF0IjoxNjcxODI0ODE5fQ.FSK79QuXy__JIkFV4VKZN0YRsZr6oT1Bh6A7Izic_ps
+{
+    "title": "gsd another another new blog to test if user binds",
+    "author": "gaba wabadsaf",
+    "url": "funnny.com",
+    "likes": 54254,
+    "userId": "63a4ed6cfb899cbd823ab813"
 }
