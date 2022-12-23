@@ -39,10 +39,19 @@ POST http://localhost:3003/api/users HTTP/1.1
 content-type: application/json
 
 {
-    "username": "rjames187",
-    "name": "rory",
+    "username": "tjk",
+    "name": "ted",
     "password": "funnyepicmoments12!"
 }
 
 ###
 GET http://localhost:3003/api/users
+
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "tjk",
+    "password": "funnyepicmoments12!"
+}
