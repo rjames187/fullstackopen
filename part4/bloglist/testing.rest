@@ -2,10 +2,11 @@ POST http://localhost:3003/api/blogs HTTP/1.1
 content-type: application/json
 
 {
-    "title": "cool article",
-    "author": "poopy funny face",
-    "url": "cool.com",
-    "likes": 545
+    "title": "another another new blog to test if user binds",
+    "author": "gaba wabadsaf",
+    "url": "funnny.com",
+    "likes": 54254,
+    "userId": "63a4ed6cfb899cbd823ab813"
 }
 
 ###
