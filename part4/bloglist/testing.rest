@@ -70,6 +70,6 @@ authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRqa
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/63a62c767668d50e6858f202
-content-type: application/application/json
-authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRqayIsImlkIjoiNjNhNTFjNWY5NTJjZDc2MGJjNDA1NWY4IiwiaWF0IjoxNjcxODM3MTQwfQ.Hvb924aDW3Bbm3I1Obwjt90V3bpFw332Lhv_5nlu9tM
+DELETE http://localhost:3003/api/blogs/63a66c19c29dd5a273543dce
+content-type: application/json
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRqayIsImlkIjoiNjNhNTFjNWY5NTJjZDc2MGJjNDA1NWY4IiwiaWF0IjoxNjcxODUxNDQzfQ.y7ICsiWvDidstOweqP66QzLmFWw2cgo9NfBLtlI0PgI
