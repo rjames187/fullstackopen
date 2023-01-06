@@ -1,5 +1,7 @@
 const User = require('../models/user')
 const Blog = require('../models/blog')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const initialBlogs = [
   {
@@ -16,6 +18,11 @@ const initialBlogs = [
   }
 ]
 
+const credentials = {
+  username: 'brock',
+  password: 'brock21415!'
+}
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
@@ -26,8 +33,36 @@ const usersInDb = async () => {
   return users.map(u => u.toJSON())
 }
 
+const registerAndLogIn = async () => {
+  const username = "brock"
+  const name = "Brian Rockwell"
+  const password = "brock13421!"
+
+  const passwordHash = await bcrypt.hash(password, 10)
+
+  const user = new User({
+    username,
+    name,
+    passwordHash
+  })
+
+  await user.save()
+
+  const fetchedUser = await User.findOne({ username })
+
+  const userForToken = {
+    username: user.username,
+    id: fetchedUser._id
+  }
+
+  const token = jwt.sign(userForToken, process.env.SECRET)
+
+  return token
+}
+
 module.exports = {
   initialBlogs,
   blogsInDb,
-  usersInDb
+  usersInDb,
+  registerAndLogIn
 }

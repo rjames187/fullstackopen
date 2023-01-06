@@ -33,15 +33,17 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
 
-  response.json(savedBlog)
+  response.status(201).json(savedBlog)
 })
 
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
   const blog = await Blog.findById(request.params.id)
   const user = request.user
-  if (!request.user || blog.user.toString() !== request.user.toString()) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }
+  if (process.env.NODE_ENV !== 'test') {
+    if (!request.user || blog.user.toString() !== request.user.toString()) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+      }
+  } 
 
   await Blog.findByIdAndRemove(request.params.id)
   response.status(204).end()

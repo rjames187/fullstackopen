@@ -5,12 +5,19 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
+var token = null
 
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
+  
+  token = await helper.registerAndLogIn()
+  console.log(token)
 
   const blogObjects = helper.initialBlogs
-    .map(blog => new Blog(blog))
+  .map(blog => new Blog(blog))
   const promiseArray = blogObjects.map(blog => blog.save())
   await Promise.all(promiseArray)
 })
@@ -31,57 +38,63 @@ test('unique identifier property of blog posts is named "id"', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
-test('a blog can be added', async () => {
-  const newBlog = {
-    title: 'The Center Cannot Hold',
-    author: 'Elyn Saks',
-    url: 'law.com',
-    likes: 10045
-  }
+describe('addition of a blog', () => {
+  test('a blog can be added', async () => {
+    console.log(token)
 
-  await api.post('/api/blogs').send(newBlog).expect(201).expect('Content-Type', /application\/json/)
-
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
-
-  const titles = blogsAtEnd.map(b => b.title)
-  expect(titles).toContain('The Center Cannot Hold')
+    const newBlog = {
+      title: 'The Center Cannot Hold',
+      author: 'Elyn Saks',
+      url: 'law.com',
+      likes: 10045
+    }
+  
+    await api.post('/api/blogs').set('Authorization', `bearer ${token}`).send(newBlog)
+      .expect(201).expect('Content-Type', /application\/json/)
+  
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
+  
+    const titles = blogsAtEnd.map(b => b.title)
+    expect(titles).toContain('The Center Cannot Hold')
+  }, 10000)
+  
+  test('missing likes property defaults to zero', async () => {
+    const newBlog = {
+      title: 'The Center Cannot Hold',
+      author: 'Elyn Saks',
+      url: 'law.com'
+    }
+  
+    const response = await api.post('/api/blogs').set('Authorization', `bearer ${token}`)
+      .send(newBlog)
+    expect(response.body.likes).toBe(0)
+  })
+  
+  test('missing title or url property results in status code 400', async () => {
+    const titlelessBlog = {
+      author: 'Elyn Saks',
+      url: 'law.com',
+      likes: 10045
+    }
+  
+    const urllessBlog = {
+      title: 'The Center Cannot Hold',
+      author: 'Elyn Saks',
+      likes: 10045
+    }
+  
+    await api.post('/api/blogs').send(titlelessBlog).set('Authorization', `bearer ${token}`).expect(400)
+    await api.post('/api/blogs').send(urllessBlog).set('Authorization', `bearer ${token}`).expect(400)
+  })
 })
 
-test('missing likes property defaults to zero', async () => {
-  const newBlog = {
-    title: 'The Center Cannot Hold',
-    author: 'Elyn Saks',
-    url: 'law.com'
-  }
-
-  const response = await api.post('/api/blogs').send(newBlog)
-  expect(response.body.likes).toBe(0)
-})
-
-test('missing title or url property results in status code 400', async () => {
-  const titlelessBlog = {
-    author: 'Elyn Saks',
-    url: 'law.com',
-    likes: 10045
-  }
-
-  const urllessBlog = {
-    title: 'The Center Cannot Hold',
-    author: 'Elyn Saks',
-    likes: 10045
-  }
-
-  await api.post('/api/blogs').send(titlelessBlog).expect(400)
-  await api.post('/api/blogs').send(urllessBlog).expect(400)
-})
-
-describe('deletion of a note', () => {
+describe('deletion of a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
-
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+    console.log(blogToDelete)
+    await api.delete(`/api/blogs/${blogToDelete.id}`).set('Authorization', `bearer ${token}`).expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
@@ -91,7 +104,7 @@ describe('deletion of a note', () => {
   })
 
   test('fails with status code 400 if id is invalid', async () => {
-    await api.delete('/api/blogs/12').expect(400)
+    await api.delete('/api/blogs/12').set('Authorization', `bearer ${token}`).expect(400)
   })
 })
 
@@ -107,7 +120,7 @@ describe('update of a blog', () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToUpdate = blogsAtStart[0]
 
-    await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog).expect(200)
+    await api.put(`/api/blogs/${blogToUpdate.id}`).set('Authorization', `bearer ${token}`).send(newBlog).expect(200)
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
@@ -117,7 +130,7 @@ describe('update of a blog', () => {
   })
 
   test('fails with status code 400 if id is invalid', async () => {
-    await api.put('/api/blogs/356').send(newBlog).expect(400)
+    await api.put('/api/blogs/356').set('Authorization', `bearer ${token}`).send(newBlog).expect(400)
   })
 })
 
