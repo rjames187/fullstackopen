@@ -16,15 +16,15 @@ const Blog = ({blog}) => {
 
   return (
     <div style={blogStyle}>
-      <div>{blog.title}</div>
+      <div>{blog.title} {blog.author}</div>
       <button onClick={handleClick}>{buttonText}</button>
       <div style={{display: detailsHidden ? 'none' : ''}}>
         <a href={blog.url}>{blog.url}</a>
         <div style={{display: 'flex'}}>
-          <div>likes 0</div>
+          <div>likes {blog.likes ? blog.likes : 0}</div>
           <button>like</button>
         </div>
-        <div>{blog.author}</div>
+        <div>{blog.user ? blog.user.name : ''}</div>
       </div>
     </div>  
   )
