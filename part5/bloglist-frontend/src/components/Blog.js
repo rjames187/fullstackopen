@@ -1,10 +1,16 @@
 import { useState } from 'react'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, editBlog}) => {
   const [detailsHidden, setDetailsHidden] = useState(true)
+  const [numLikes, setNumLikes] = useState(blog.likes ? blog.likes : 0)
 
   const buttonText = detailsHidden ? "view" : "hide"
   const handleClick = () => setDetailsHidden(!detailsHidden)
+  const handleLike = () => {
+    blog.likes = blog.likes ? blog.likes + 1 : 1
+    setNumLikes(numLikes + 1)
+    editBlog([blog.id, blog])
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -21,8 +27,8 @@ const Blog = ({blog}) => {
       <div style={{display: detailsHidden ? 'none' : ''}}>
         <a href={blog.url}>{blog.url}</a>
         <div style={{display: 'flex'}}>
-          <div>likes {blog.likes ? blog.likes : 0}</div>
-          <button>like</button>
+          <div>likes {numLikes}</div>
+          <button onClick={handleLike}>like</button>
         </div>
         <div>{blog.user ? blog.user.name : ''}</div>
       </div>

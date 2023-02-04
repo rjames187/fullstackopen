@@ -61,6 +61,10 @@ const App = () => {
     }, 2000)
   }
 
+  const editBlog = async (params) => {
+    await blogService.update(...params)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -111,7 +115,7 @@ const App = () => {
       </Togglable>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} editBlog={editBlog}/>
       )}
     </div>
   )
