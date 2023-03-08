@@ -16,7 +16,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -33,19 +33,19 @@ const App = () => {
       <div>
         username
         <input
-        type="text"
-        value={username}
-        name="Username"
-        onChange={({target}) => setUsername(target.value)}
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
         />
       </div>
       <div>
         password
         <input
-        type="password"
-        value={password}
-        name="Password"
-        onChange={({target}) => setPassword(target.value)}
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
         />
       </div>
       <button type="submit">login</button>
@@ -79,7 +79,7 @@ const App = () => {
       const user = await loginService.login({
         username, password
       })
-      
+
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
@@ -89,7 +89,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setMessage("wrong username or password")
+      setMessage('wrong username or password')
       setTimeout(() => {
         setMessage(null)
       }, 2000)
@@ -98,7 +98,7 @@ const App = () => {
 
   const handleLogout = () => {
     setUser(null)
-    window.localStorage.removeItem("loggedBlogappUser")
+    window.localStorage.removeItem('loggedBlogappUser')
   }
 
   if (user === null) return (
