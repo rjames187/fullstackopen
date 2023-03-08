@@ -20,19 +20,19 @@ const BlogForm = ({ addNewBlog }) => {
       <label>title</label>
       <input
         value={newTitle}
-        onChange={({target}) => setNewTitle(target.value)}
+        onChange={({ target }) => setNewTitle(target.value)}
       />
       <br/>
       <label>author</label>
       <input
         value={newAuthor}
-        onChange={({target}) => setNewAuthor(target.value)}
+        onChange={({ target }) => setNewAuthor(target.value)}
       />
       <br/>
       <label>url</label>
       <input
         value={newUrl}
-        onChange={({target}) => setNewUrl(target.value)}
+        onChange={({ target }) => setNewUrl(target.value)}
       />
       <br/>
       <button type="submit">save</button>
