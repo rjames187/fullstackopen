@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({blog, editBlog, removeBlog}) => {
+const Blog = ({blog, editBlog, removeBlog, user}) => {
   const [detailsHidden, setDetailsHidden] = useState(true)
   const [numLikes, setNumLikes] = useState(blog.likes ? blog.likes : 0)
 
@@ -12,8 +12,7 @@ const Blog = ({blog, editBlog, removeBlog}) => {
     editBlog([blog.id, blog])
   }
   const handleDelete = () => {
-    const id = blog.id
-    removeBlog(id)
+    removeBlog(blog.id, blog.title, blog.author)
   }
 
   const blogStyle = {
@@ -22,6 +21,11 @@ const Blog = ({blog, editBlog, removeBlog}) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
+  }
+
+  const isSameUser = (a, b) => {
+    if (!a || !b) return false
+    return a.username === b.username && a.name === b.name
   }
 
   return (
@@ -35,7 +39,10 @@ const Blog = ({blog, editBlog, removeBlog}) => {
           <button onClick={handleLike}>like</button>
         </div>
         <div>{blog.user ? blog.user.name : ''}</div>
-        <button onClick={handleDelete}>remove</button>
+        {
+          isSameUser(user, blog.user) ?
+          <button onClick={handleDelete}>remove</button> : <></>
+        }
       </div>
     </div>  
   )

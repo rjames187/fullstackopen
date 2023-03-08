@@ -65,9 +65,11 @@ const App = () => {
     await blogService.update(...params)
   }
 
-  const removeBlog = async (id) => {
-    setBlogs(blogs.filter(blog => blog.id !== id))
-    await blogService.remove(id)
+  const removeBlog = async (id, title, author) => {
+    if (window.confirm(`Remove blog ${title} by ${author}?`)) {
+      setBlogs(blogs.filter(blog => blog.id !== id))
+      await blogService.remove(id)
+    }
   }
 
   const handleLogin = async (event) => {
@@ -120,7 +122,7 @@ const App = () => {
       </Togglable>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} editBlog={editBlog} removeBlog={removeBlog}/>
+        <Blog key={blog.id} blog={blog} editBlog={editBlog} removeBlog={removeBlog} user={user}/>
       )}
     </div>
   )
