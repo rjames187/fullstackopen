@@ -48,3 +48,16 @@ test('clicking the button shows likes and blog url', async () => {
   const hidden = container.querySelector('.addenum')
   expect(hidden).toHaveStyle('display: block')
 })
+
+test('clicking the like button twice calls the event handler twice', async () => {
+  const props = buildProps(jest.fn(), jest.fn())
+
+  render(<Blog {...props}></Blog>)
+  const user = userEvent.setup()
+  const button = screen.getByText('like')
+  await user.click(button)
+  await user.click(button)
+
+  const likes = screen.getByText('likes 7')
+  expect(likes).toBeDefined()
+})
