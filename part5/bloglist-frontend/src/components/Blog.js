@@ -33,7 +33,7 @@ const Blog = ({ blog, editBlog, removeBlog, user }) => {
     <div style={blogStyle}>
       <div>{blog.title} {blog.author}</div>
       <button onClick={handleClick}>{buttonText}</button>
-      <div style={{ display: detailsHidden ? 'none' : '' }}>
+      <div className='addenum' style={{ display: detailsHidden ? 'none' : '' }}>
         <a href={blog.url}>{blog.url}</a>
         <div style={{ display: 'flex' }}>
           <div>likes {numLikes}</div>
