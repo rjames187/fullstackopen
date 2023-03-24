@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 function buildProps(editMock, removeMock) {
@@ -34,4 +35,16 @@ test('renders content', () => {
 
   const hidden = container.querySelector('.addenum')
   expect(hidden).toHaveStyle('display: none')
+})
+
+test('clicking the button shows likes and blog url', async () => {
+  const props = buildProps(jest.fn(), jest.fn())
+
+  const container = render(<Blog {...props}></Blog>).container
+  const user = userEvent.setup()
+  const button = screen.getByText('view')
+  await user.click(button)
+
+  const hidden = container.querySelector('.addenum')
+  expect(hidden).toHaveStyle('display: block')
 })
